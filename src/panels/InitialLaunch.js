@@ -48,7 +48,7 @@ const InitialLaunch = ({id, fetchedUser, go, useModal}) => {
                 </Div>
                 <Group mode="plain">
                     <Header>Подтвердите данные:</Header>
-                    {!(window.localStorage.getItem("access_group") == "4") ? <Cell
+                    {!(window.localStorage.getItem("has_group") == "0") ? <Cell
                         before={<Icon20Users3Outline width={30} height={30}/>}
                         after={<Chip removable={false}>{window.localStorage.getItem("group_name")}</Chip>}
                     >

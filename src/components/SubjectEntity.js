@@ -6,7 +6,14 @@ import {
     Card, Cell, Counter, RichCell, Separator, SimpleCell, Spacing, Title,
 } from '@vkontakte/vkui';
 import {
-    Icon12Clock, Icon16ClockOurline, Icon16Smile, Icon20UserOutline, Icon20Users3Outline, Icon24Switch, Icon36Users
+    Icon12Clock,
+    Icon16ClockOurline,
+    Icon16Smile,
+    Icon20UserOutline,
+    Icon20Users3Outline,
+    Icon24Switch,
+    Icon28SwitchOutline,
+    Icon36Users
 } from "@vkontakte/icons";
 
 // Map for card headers
@@ -27,10 +34,24 @@ const styleMap = {
         color: "#ffffff",
         textShadow: "0 0 1px #000000"
     },
+    subjNumberC: {
+        background: "#ffffff",
+        color: "#168efd",
+        textShadow: "none",
+        textAlign: "center",
+        borderRadius: "10px",
+        padding: "2px",
+        height: "100%",
+
+    },
     subjNumber: {
         background: "#ffffff",
         color: "#168efd",
-        textShadow: "none"
+        textShadow: "none",
+        textAlign: "center",
+        borderRadius: "10px",
+        padding: "8px",
+        width: "10px"
     },
     headerTitle: {
         marginLeft: "10px"
@@ -56,9 +77,13 @@ const Subject = ({subject, prepMode}) => {
     const subjTime        = SubjectMap.subjTime;
     const subjRoom        = SubjectMap.subjRoom;
 
-    const subjCounter     = <Counter mode="primary" style={styleMap.subjNumber}>
+    const subjCounter     = <div mode="primary" style={styleMap.subjNumber}>
                                 <b>{SubjectMap.subjCounter}</b>
-                            </Counter>;
+                            </div>;
+    const subjCounterC    = <div mode="primary" style={styleMap.subjNumberC}>
+                                <b>{SubjectMap.subjCounter}</b>
+                                <Icon24Switch style={{color: "rgba(255,0,0,0.5)"}} width={20} height={20}/>
+                            </div>;
     const changeIndicator = SubjectMap.isChanged ? <Icon24Switch style={{color: "rgba(255,0,0,0.5)", marginLeft: "5px"}} width={25} height={25}/> : null;
     const iconClock       = <Icon16ClockOurline  width={20} height={20}/>;
     const iconUser        = <Icon20UserOutline   width={20} height={20}/>;
@@ -79,9 +104,10 @@ const Subject = ({subject, prepMode}) => {
                 {!prepMode ?
                     <SimpleCell disabled before={iconUser}>
                         <Title level="3" weight="regular">{subjLead}</Title>
-                    </SimpleCell> :
+                    </SimpleCell>
+                    :
                     <SimpleCell disabled before={iconGroup}>
-                        <Title level="3" weight="regular">{SubjectMap.subjectGroup}</Title>
+                        <Title level="3" weight="regular">{"Группа: " + SubjectMap.subjectGroup}</Title>
                     </SimpleCell>
                 }
 
@@ -93,7 +119,7 @@ const Subject = ({subject, prepMode}) => {
     } else {
         return (
             <div>
-                <SimpleCell disabled before={<span style={{display: "flex"}}>{subjCounter} {changeIndicator}</span>} after={subjTime.split(" - ")[0]} >
+                <SimpleCell disabled before={SubjectMap.isChanged ? subjCounter : subjCounterC} after={subjTime.split(" - ")[0]} >
                     <span style={{marginLeft: "10px", fontWeight: "bold"}}>{subjName + (subjName.length >= useDots ? "..." : "")}</span><br/>
                     <span style={{margin: "10px"}}>{subjRoom}</span>
                 </SimpleCell>

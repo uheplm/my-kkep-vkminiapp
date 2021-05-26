@@ -52,12 +52,12 @@ const UserData = ({ id, go, fetchedUser }) => {
 				/>
 				<Group mode="plain">
 					<Header>Информация о пользователе:</Header>
-					<Cell disabled
+					{!(window.localStorage.getItem("has_group") == "0") ? <Cell disabled
 						before={<Icon20Users3Outline width={30} height={30}/>}
 						after={<Chip removable={false}>{window.localStorage.getItem("group_name")}</Chip>}
 					>
 						Учебная группа
-					</Cell>
+					</Cell> : null}
 					<Cell disabled
 						before={<Icon56UserBookOutline width={30} height={30}/>}
 						after={<Chip removable={false}>{window.localStorage.getItem("access_name")}</Chip>}

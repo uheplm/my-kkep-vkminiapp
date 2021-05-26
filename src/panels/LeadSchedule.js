@@ -37,7 +37,7 @@ import {
 	Icon16ClockOurline,
 	Icon16InfoOutline, Icon20User,
 	Icon20UserCircleFillBlue, Icon20UserCircleOutline, Icon20UserOutline, Icon20Users3Outline, Icon24Back,
-	Icon24Note, Icon24UserSquare
+	Icon24Note, Icon24UserSquare, Icon28UserStarBadgeOutline
 } from "@vkontakte/icons";
 import {Day, DayPlaceholder} from "../components/DayEntity";
 
@@ -51,13 +51,13 @@ const colorMapHeader = {
 }
 
 
-const StudentsSchedule = ({go, id}) => {
+const LeadSchedule = ({go, id}) => {
 	const [week, setWeek] = useState(0);
 	const [groups, setGroups] = useState(null);
 	const [schedule, setSchedule] = useState(null);
 	async function fetchSchedule(e) {
 			let map = [];
-			let HTTP = `https://my.kkep.ru/api.php?token=${window.localStorage.getItem("auth_token")}&method=get_stud_rasp&group=${e.target.value}`;
+			let HTTP = `https://my.kkep.ru/api.php?token=${window.localStorage.getItem("auth_token")}&method=get_prep_rasp&teacher=${e.target.value}`;
 			await fetch(HTTP).then((response) => {
 					setWeek(0);
 					return response.json()
@@ -83,13 +83,13 @@ const StudentsSchedule = ({go, id}) => {
 
 	useEffect(() => {
 		async function fetchGroupList(){
-			await fetch(`https://my.kkep.ru/api.php?token=${window.localStorage.getItem("auth_token")}&method=get_group_list`)
+			await fetch(`https://my.kkep.ru/api.php?token=${window.localStorage.getItem("auth_token")}&method=get_prep_list`)
 				.then((response) => {
 					return response.json()
 				})
 				.then((response) => {
 					console.log(response)
-					setGroups(response.map(group => ({value: group.group_num, label: group.group_name})))
+					setGroups(response.map(lead => ({value: lead.uid, label: lead.teacher_name})))
 				})
 		}
 		fetchGroupList();
@@ -99,15 +99,15 @@ const StudentsSchedule = ({go, id}) => {
 	return (
 
 		<Panel id={id}>
-			<PanelHeader left={<PanelHeaderBack onClick={go} data-to="home"/>}>Студенты</PanelHeader>
-			{groups && <FormItem top="Группа:">
+			<PanelHeader left={<PanelHeaderBack onClick={go} data-to="home"/>}>Преподаватели</PanelHeader>
+			{groups && <FormItem top="Преподаватель:">
 				<CustomSelect
 				  placeholder="Не выбран"
 				  options={groups}
 				  onChange={fetchSchedule}
 
 				  renderOption={({ option, ...restProps }) => (
-					<CustomSelectOption {...restProps} before={<Icon20Users3Outline/>}/>
+					<CustomSelectOption {...restProps} before={<Icon28UserStarBadgeOutline/>}/>
 				  )}
 				/>
 				</FormItem>
@@ -135,7 +135,7 @@ const StudentsSchedule = ({go, id}) => {
 
 	)
 }
-StudentsSchedule.propTypes = {
+LeadSchedule.propTypes = {
 	id: PropTypes.string.isRequired,
 	go: PropTypes.func.isRequired,
 	schedule: PropTypes.shape({
@@ -144,4 +144,4 @@ StudentsSchedule.propTypes = {
 	}),
 
 };
-export default StudentsSchedule;
+export default LeadSchedule;

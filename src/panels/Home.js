@@ -47,7 +47,12 @@ import {
 	Icon28InfoOutline,
 	Icon28MessageOutline,
 	Icon28NewsfeedOutline,
-	Icon28ServicesOutline, Icon28Settings, Icon28SettingsOutline, Icon28UserCircleOutline, Icon36Users3Outline
+	Icon28ServicesOutline,
+	Icon28Settings,
+	Icon28SettingsOutline,
+	Icon28UserCircleOutline,
+	Icon28UserStarBadgeOutline,
+	Icon36Users3Outline
 } from "@vkontakte/icons";
 
 import {Day, DayPlaceholder} from "../components/DayEntity";
@@ -66,12 +71,13 @@ const Home = ({ id, go, fetchedUser, schedule }) => {
 		return (
 			<Panel id={id}>
 				<PanelHeader left={fetchedUser && <PanelHeaderButton onClick={go} data-to="userdata"><Icon28SettingsOutline/></PanelHeaderButton>}>Мой ККЭП</PanelHeader>
-
-				<Div style={{display: "flex"}}>
-					{isLead && <Button before={<Icon36Users3Outline/>} size="l" stretched onClick={go} data-to="students" style={{marginRight: "10px"}}>Расписание студентов</Button>}
+				<br/>
+				<CardScroll>
+					{isLead ? <Button before={<Icon36Users3Outline/>} size="l" stretched onClick={go} data-to="students" style={{marginRight: "10px"}}>Расписание студентов</Button> : null}
 					<Button before={<Icon24List/>} size="l" stretched onClick={go} data-to="fullrasp">Полное расписание</Button>
-				</Div>
-
+					{isLead ? <Button before={<Icon28UserStarBadgeOutline/>} size="l" stretched onClick={go} data-to="leads" style={{marginLeft: "10px"}}>Расписание преподавателей</Button> : null}
+				</CardScroll>
+				<br/>
 				{todayIndex == 0 ? null : <Day ignoreToday={true} DayName="Сегодня" Day={currentSchedule[todayIndex-1]}/>}
 				{todayIndex == 6 ? null : (todayIndex == 0 ? <Day DayName="Завтра" Day={nextSchedule[todayIndex]}/> : <Day DayName="Завтра" Day={currentSchedule[todayIndex]}/>)}
 

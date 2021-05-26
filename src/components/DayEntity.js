@@ -7,11 +7,11 @@ import {Subject, SubjectPlaceholder} from "../components/SubjectEntity"
 
 const styleMap = {
     title: {
-        marginBottom: "5px"
+        marginBottom: "0px"
     },
     counterBadge: {
         marginRight: "8px",
-        fontSize: "13pt"
+        fontSize: "12pt"
     },
     dayTitle: {
         textTransform: "capitalize",
@@ -19,7 +19,7 @@ const styleMap = {
     },
     subjectsRoot: {
         height: "100%",
-        paddingBottom: "10px"
+        paddingBottom: "0px"
     },
     subjectsRootPh: {
         height: "100%",
@@ -56,10 +56,11 @@ const Day = ({Day, DayName, ignoreToday}) => {
                     <Title level="2"
                            style={styleMap.dayTitle}>{DayName == undefined ? DayMap.dayName : DayName + ": " + DayMap.dayName}</Title>
                 </SimpleCell>
-                {(DayMap.subjectList.length > 0) ? <CardScroll size="m" style={styleMap.subjectsRoot}>
-                    {DayMap.subjectList.map((subject) => <Subject prepMode={isLeadMode} subject={subject}/>)} :
-
-                </CardScroll> :
+                {(notNull() > 0) ?
+                    <CardScroll size="m" style={styleMap.subjectsRoot}>
+                        {DayMap.subjectList.map((subject) => <Subject prepMode={isLeadMode} subject={subject}/>)}
+                    </CardScroll>
+                    :
                     <Div>
                         <Card style={styleMap.subjectsRootList}><SubjectPlaceholder/></Card>
                     </Div>
@@ -75,7 +76,7 @@ const Day = ({Day, DayName, ignoreToday}) => {
                 </SimpleCell>
                 <Div>
                     <Card style={styleMap.subjectsRootList}>
-                        {(DayMap.subjectList.length > 0) ?
+                        {(notNull() > 0) ?
                             DayMap.subjectList.map((subject) => <Subject prepMode={isLeadMode} subject={subject}/>) :
                             <SubjectPlaceholder/>
                         }

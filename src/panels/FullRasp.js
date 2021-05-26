@@ -74,7 +74,7 @@ const FullRasp = ({go, id, schedule}) => {
 					},
 				]}
 				renderOption={({ option, ...restProps }) => (
-					<CustomSelectOption {...restProps} before={<Icon20Users3Outline/>}/>
+					<CustomSelectOption {...restProps}/>
 				  )}
 				/>
 			</Div>
