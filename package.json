@@ -1,0 +1,48 @@
+{
+  "name": "textapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env PORT=10888 HTTPS=true react-scripts start",
+    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "vk-miniapps-deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "react-hot-loader": "^4.13.0",
+    "react-scripts": "^4.0.3"
+  },
+  "dependencies": {
+    "@vkontakte/icons": "^1.92.0",
+    "@vkontakte/vk-bridge": "^2.4.1",
+    "@vkontakte/vk-miniapps-deploy": "0.0.25",
+    "@vkontakte/vkjs": "^0.21.0",
+    "@vkontakte/vkui": "^4.5.0",
+    "babel-eslint": "^10.1.0",
+    "chalk": "^4.1.0",
+    "eruda": "^2.4.1",
+    "eruda-code": "^2.0.0",
+    "eruda-dom": "^2.0.0",
+    "prop-types": "^15.7.2",
+    "qs": "^6.10.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
