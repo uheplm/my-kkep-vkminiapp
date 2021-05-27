@@ -63,7 +63,7 @@ const App = () => {
 						setActivePanel('failed')
 					}
 				}).finally(() => {fetchSchedule()})
-			}
+			}else fetchSchedule();
 		}
 		async function fetchSchedule() {
 			const user = await bridge.send('VKWebAppGetUserInfo');
