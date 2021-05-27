@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Badge, Card, CardScroll, Div, Gallery, SimpleCell, Text, Title} from "@vkontakte/vkui";
+import {Badge, Card, CardScroll, Div, Gallery, Separator, SimpleCell, Text, Title} from "@vkontakte/vkui";
 
 import {Subject, SubjectPlaceholder} from "../components/SubjectEntity"
 
@@ -15,22 +15,28 @@ const styleMap = {
     },
     dayTitle: {
         textTransform: "capitalize",
-        marginLeft: "10px"
+        marginLeft: "0px"
     },
     subjectsRoot: {
         height: "100%",
-        paddingBottom: "0px"
+        paddingBottom: "0px",
+        marginBottom: "10px",
     },
     subjectsRootPh: {
         height: "100%",
+        marginLeft: "15px",
+        marginRight: "15px",
     },
     subjectsRootList: {
-        height: "100%"
+        height: "100%",
+        marginBottom: "15px",
+        marginLeft: "15px",
+        marginRight: "15px",
     }
 }
 
-const Day = ({Day, DayName, ignoreToday}) => {
-    const isLeadMode = Day.hasOwnProperty("prep_uid");
+const Day = ({Day, DayName, ignoreToday, forceLeadMode}) => {
+    const isLeadMode = Day.hasOwnProperty("prep_uid") | forceLeadMode;
     const listedView = window.localStorage.getItem("show_list") == 1;
     const DayMap = {
         dayIndex: Day.day_of_week,
@@ -47,13 +53,13 @@ const Day = ({Day, DayName, ignoreToday}) => {
         }
         return pairCounter;
     }
-    const todayIndicator = DayMap.dayIndex == new Date().getDay() & !ignoreToday ? <Badge mode="prominent"/> : null;
+    const todayIndicator = DayMap.dayIndex == new Date().getDay() & !ignoreToday ? <Badge style={{marginRight:"5px"}} mode="prominent"/> : null;
     const counterBadge   = <span style={styleMap.counterBadge}>Пары: {notNull()}</span>;
     if(!listedView) {
         return (
             <div>
                 <SimpleCell disabled before={todayIndicator} style={styleMap.title} after={counterBadge}>
-                    <Title level="2"
+                    <Title level="2" weight="semibold"
                            style={styleMap.dayTitle}>{DayName == undefined ? DayMap.dayName : DayName + ": " + DayMap.dayName}</Title>
                 </SimpleCell>
                 {(notNull() > 0) ?
@@ -70,18 +76,18 @@ const Day = ({Day, DayName, ignoreToday}) => {
     } else {
         return (
             <div>
-                <SimpleCell disabled before={todayIndicator} style={styleMap.title} after={counterBadge}>
-                    <Title level="2"
-                           style={styleMap.dayTitle}>{DayName == undefined ? DayMap.dayName : DayName + ": " + DayMap.dayName}</Title>
-                </SimpleCell>
-                <Div>
-                    <Card style={styleMap.subjectsRootList}>
-                        {(notNull() > 0) ?
-                            DayMap.subjectList.map((subject) => <Subject prepMode={isLeadMode} subject={subject}/>) :
-                            <SubjectPlaceholder/>
-                        }
-                    </Card>
-                </Div>
+                <Card style={styleMap.subjectsRootList} mode="shadow">
+                    <SimpleCell disabled before={todayIndicator} style={styleMap.title} after={counterBadge}>
+                        <Title level="2" weight="semibold"
+                               style={styleMap.dayTitle}>{DayName == undefined ? DayMap.dayName : DayName + ": " + DayMap.dayName}</Title>
+                    </SimpleCell>
+                    <Separator/>
+                    {(notNull() > 0) ?
+                        DayMap.subjectList.map((subject) => <Subject prepMode={isLeadMode} subject={subject}/>) :
+                        <SubjectPlaceholder/>
+                    }
+                </Card>
+
             </div>
         )
     }

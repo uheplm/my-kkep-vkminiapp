@@ -60,7 +60,7 @@ const FullRasp = ({go, id, schedule}) => {
 	return (
 
 		<Panel id={id}>
-			<PanelHeader left={<PanelHeaderBack onClick={go} data-to="home"/>}>Полное расписание</PanelHeader>
+			<PanelHeader left={<PanelHeaderBack onClick={go} data-to="home"/>}>Расписание</PanelHeader>
 			<Div>
 
 				<CustomSelect onChange={e => {setWeek(e.target.value)}} value={week} options={[
@@ -77,7 +77,9 @@ const FullRasp = ({go, id, schedule}) => {
 					<CustomSelectOption {...restProps}/>
 				  )}
 				/>
+
 			</Div>
+
 			{map[week].map((day) => <Day ignoreToday={week == 1} Day={day}/>)}
 		</Panel>
 

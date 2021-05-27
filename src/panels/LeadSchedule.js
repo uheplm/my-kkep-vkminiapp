@@ -104,16 +104,12 @@ const LeadSchedule = ({go, id}) => {
 				<CustomSelect
 				  placeholder="Не выбран"
 				  options={groups}
+				  style={{marginBottom: "10px"}}
 				  onChange={fetchSchedule}
-
 				  renderOption={({ option, ...restProps }) => (
 					<CustomSelectOption {...restProps} before={<Icon28UserStarBadgeOutline/>}/>
 				  )}
 				/>
-				</FormItem>
-			}
-
-			<FormItem top="Неделя:">
 				<CustomSelect onChange={e => {setWeek(e.target.value)}} value={week} options={[
 						{
 							label: 'Текущая неделя',
@@ -128,9 +124,13 @@ const LeadSchedule = ({go, id}) => {
 					<CustomSelectOption {...restProps}/>
 				  )}
 				/>
-			</FormItem>
+				</FormItem>
+			}
 
-			{schedule && schedule[week].map(day => <Day ignoreToday={week == 1} Day={day}/> )}
+
+
+
+			{schedule && schedule[week].map(day => <Day ignoreToday={week == 1} forceLeadMode={true} Day={day}/> )}
 		</Panel>
 
 	)

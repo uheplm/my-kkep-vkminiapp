@@ -29,17 +29,17 @@ import {
 	Tabs,
 	TabsItem,
 	Gradient,
-	HorizontalScroll, HorizontalCell, CardScroll, Epic, Tabbar, TabbarItem, PanelHeaderButton
+	HorizontalScroll, HorizontalCell, CardScroll, Epic, Tabbar, TabbarItem, PanelHeaderButton, Separator
 } from '@vkontakte/vkui';
 import {
-	Icon12Clock,
+	Icon12Clock, Icon16ChevronLeft,
 	Icon16ClockOurline,
 	Icon16InfoOutline,
 	Icon20User,
 	Icon20UserCircleFillBlue,
 	Icon20UserCircleOutline,
 	Icon20UserOutline,
-	Icon20Users3Outline,
+	Icon20Users3Outline, Icon24ChevronRight,
 	Icon24List,
 	Icon24Note,
 	Icon24UserSquare,
@@ -58,6 +58,7 @@ import {
 import {Day, DayPlaceholder} from "../components/DayEntity";
 import {IconSettingsContext} from "@vkontakte/icons/dist/IconSettings";
 
+import ListIcon from "../img/list.svg";
 const sign = window.location.search.split("sign=")[1]
 
 const Home = ({ id, go, fetchedUser, schedule }) => {
@@ -70,14 +71,24 @@ const Home = ({ id, go, fetchedUser, schedule }) => {
 		const nextSchedule = schedule.next;
 		return (
 			<Panel id={id}>
-				<PanelHeader left={fetchedUser && <PanelHeaderButton onClick={go} data-to="userdata"><Icon28SettingsOutline/></PanelHeaderButton>}>Мой ККЭП</PanelHeader>
-				<br/>
-				<CardScroll>
-					{isLead ? <Button before={<Icon36Users3Outline/>} size="l" stretched onClick={go} data-to="students" style={{marginRight: "10px"}}>Расписание студентов</Button> : null}
-					<Button before={<Icon24List/>} size="l" stretched onClick={go} data-to="fullrasp">Полное расписание</Button>
-					{isLead ? <Button before={<Icon28UserStarBadgeOutline/>} size="l" stretched onClick={go} data-to="leads" style={{marginLeft: "10px"}}>Расписание преподавателей</Button> : null}
-				</CardScroll>
-				<br/>
+				<PanelHeader left={<PanelHeaderButton onClick={go} data-to="userdata"><Icon28SettingsOutline/></PanelHeaderButton>}>Мой ККЭП</PanelHeader>
+
+				{/*<CardScroll>*/}
+				{/*	<Button before={<Icon36Users3Outline/>} size="l"  onClick={go} data-to="students" style={{marginRight: "10px"}}></Button>*/}
+				{/*	<Button before={<Icon24List/>} size="l"  onClick={go} data-to="fullrasp"></Button>*/}
+				{/*	<Button before={<Icon28UserStarBadgeOutline/>} size="l"  onClick={go} data-to="leads" style={{marginLeft: "10px"}}></Button>*/}
+				{/*	*/}
+				{/*</CardScroll>*/}
+
+				<Div style={{display: "flex"}}>
+					<Button size="l" stretched before={<Icon36Users3Outline/>} style={{marginRight: "10px"}} onClick={go} data-to="students">Группы</Button>
+					<Button size="l" stretched before={<Icon28UserStarBadgeOutline/>} style={{marginRight: "0px"}} onClick={go} data-to="leads">Преподаватели</Button>
+				</Div>
+
+				<SimpleCell onClick={go} data-to="fullrasp" after={<Icon24ChevronRight width={24} height={24} />} style={{marginBottom: "10px"}}>
+                    <Title level="1" >Все расписание</Title>
+                </SimpleCell>
+
 				{todayIndex == 0 ? null : <Day ignoreToday={true} DayName="Сегодня" Day={currentSchedule[todayIndex-1]}/>}
 				{todayIndex == 6 ? null : (todayIndex == 0 ? <Day DayName="Завтра" Day={nextSchedule[todayIndex]}/> : <Day DayName="Завтра" Day={currentSchedule[todayIndex]}/>)}
 

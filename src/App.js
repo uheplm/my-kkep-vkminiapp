@@ -48,7 +48,7 @@ const App = () => {
 					if (kUser.status == "ok") {
 						setData("login", "1");
 						setData("auth_token", kUser.ses_token);
-						if (kUser.user.group) {
+						if (TestData ? false : kUser.user.group) {
 							setData("has_group", "1");
 							setData("group_id", kUser.user.group.group_num);
 							setData("group_name", kUser.user.group.name);
@@ -71,22 +71,22 @@ const App = () => {
 			let HTTP = `https://my.kkep.ru/api.php?token=${window.localStorage.getItem("auth_token")}&method=get_stud_rasp&group=${window.localStorage.getItem("group_id")}`;
 			let leadHTTP = `https://my.kkep.ru/api.php?token=${window.localStorage.getItem("auth_token")}&method=get_prep_rasp&teacher=${window.localStorage.getItem("user_id")}`;
 			let useHTTP = window.localStorage.getItem("access_group") === "4" ? leadHTTP : HTTP;
-			if(window.localStorage.getItem("has_group") == "0"){
+			if(window.localStorage.getItem("has_group") == "0" & !(window.localStorage.getItem("access_group") == "4")){
 				scheduleMap.current = [
 					{day_of_week: "1", day_name: "Понедельник", pairs:[]},
-					{day_of_week: "2", day_name: "Понедельник", pairs:[]},
-					{day_of_week: "3", day_name: "Понедельник", pairs:[]},
-					{day_of_week: "4", day_name: "Понедельник", pairs:[]},
-					{day_of_week: "5", day_name: "Понедельник", pairs:[]},
-					{day_of_week: "6", day_name: "Понедельник", pairs:[]},
+					{day_of_week: "2", day_name: "Вторник", pairs:[]},
+					{day_of_week: "3", day_name: "Среда", pairs:[]},
+					{day_of_week: "4", day_name: "Четверг", pairs:[]},
+					{day_of_week: "5", day_name: "Пятница", pairs:[]},
+					{day_of_week: "6", day_name: "Суббота", pairs:[]},
 				];
 				scheduleMap.next = [
 					{day_of_week: "1", day_name: "Понедельник", pairs:[]},
-					{day_of_week: "2", day_name: "Понедельник", pairs:[]},
-					{day_of_week: "3", day_name: "Понедельник", pairs:[]},
-					{day_of_week: "4", day_name: "Понедельник", pairs:[]},
-					{day_of_week: "5", day_name: "Понедельник", pairs:[]},
-					{day_of_week: "6", day_name: "Понедельник", pairs:[]},
+					{day_of_week: "2", day_name: "Вторник", pairs:[]},
+					{day_of_week: "3", day_name: "Среда", pairs:[]},
+					{day_of_week: "4", day_name: "Четверг", pairs:[]},
+					{day_of_week: "5", day_name: "Пятница", pairs:[]},
+					{day_of_week: "6", day_name: "Суббота", pairs:[]},
 				];
 				console.log("Fetched Placeholder:");
 				console.log(scheduleMap);

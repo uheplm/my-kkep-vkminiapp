@@ -102,18 +102,14 @@ const StudentsSchedule = ({go, id}) => {
 			<PanelHeader left={<PanelHeaderBack onClick={go} data-to="home"/>}>Студенты</PanelHeader>
 			{groups && <FormItem top="Группа:">
 				<CustomSelect
-				  placeholder="Не выбран"
+				  placeholder="Не выбрана"
 				  options={groups}
+				  style={{marginBottom: "10px"}}
 				  onChange={fetchSchedule}
-
 				  renderOption={({ option, ...restProps }) => (
 					<CustomSelectOption {...restProps} before={<Icon20Users3Outline/>}/>
 				  )}
 				/>
-				</FormItem>
-			}
-
-			<FormItem top="Неделя:">
 				<CustomSelect onChange={e => {setWeek(e.target.value)}} value={week} options={[
 						{
 							label: 'Текущая неделя',
@@ -128,8 +124,8 @@ const StudentsSchedule = ({go, id}) => {
 					<CustomSelectOption {...restProps}/>
 				  )}
 				/>
-			</FormItem>
-
+				</FormItem>
+			}
 			{schedule && schedule[week].map(day => <Day ignoreToday={week == 1} Day={day}/> )}
 		</Panel>
 
