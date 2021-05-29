@@ -113,7 +113,7 @@ const Subject = ({subject, prepMode}) => {
     } else {
         return (
             <div>
-                <SimpleCell disabled before={SubjectMap.isChanged ? subjCounterC : subjCounter} after={subjTime.split(" - ")[0]} >
+                <SimpleCell disabled before={subjCounter} after={<span style={{display: "flex"}}>{subjTime.split(" - ")[0]}{SubjectMap.isChanged ? <Badge style={{marginLeft: 2}} mode="prominent"/> : null}</span>} >
                     <span style={{marginLeft: "10px", fontWeight: "bold"}}>{subjName + (subjName.length >= useDots ? "..." : "")}</span><br/>
                     <span style={{margin: "10px"}}>{subjRoom}</span><br/>
                     {prepMode ? <span style={{margin: "10px"}}>Группа:  {SubjectMap.subjectGroup} </span> :

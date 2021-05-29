@@ -53,7 +53,7 @@ const Day = ({Day, DayName, ignoreToday, forceLeadMode}) => {
         }
         return pairCounter;
     }
-    const todayIndicator = DayMap.dayIndex == new Date().getDay() & !ignoreToday ? <Badge style={{marginRight:"5px"}} mode="prominent"/> : null;
+    const todayIndicator = DayMap.dayIndex == new Date().getDay() & !ignoreToday ? <Badge style={{marginRight:"10px", background: "#00ff0d"}}/> : null;
     const counterBadge   = <span style={styleMap.counterBadge}>Пары: {notNull()}</span>;
     if(!listedView) {
         return (
@@ -98,11 +98,11 @@ const DayPlaceholder = ({dayName}) => {
             <SimpleCell disabled style={styleMap.title} after={<span style={styleMap.counterBadge}>Пары: 0</span>}>
                 <Title level="1" style={styleMap.dayTitle}>{dayName}</Title>
             </SimpleCell>
-            <Div>
-                <Card style={styleMap.subjectsRootPh}>
-                    <SubjectPlaceholder/>
-                </Card>
-            </Div>
+
+            <Card style={styleMap.subjectsRootPh}>
+                <SubjectPlaceholder/>
+            </Card>
+
         </div>
     )
 }

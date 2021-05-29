@@ -63,6 +63,8 @@ const App = () => {
 						setActivePanel('failed')
 					}
 				}).finally(() => {fetchSchedule()})
+				let notifications = await bridge.send("VKWebAppAllowNotifications");
+				window.localStorage.setItem("notify", notifications.result)
 			}else fetchSchedule();
 		}
 		async function fetchSchedule() {

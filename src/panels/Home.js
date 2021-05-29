@@ -86,7 +86,7 @@ const Home = ({ id, go, fetchedUser, schedule }) => {
 				</Div>
 
 				<SimpleCell onClick={go} data-to="fullrasp" after={<Icon24ChevronRight width={24} height={24} />} style={{marginBottom: "10px"}}>
-                    <Title level="1" >Все расписание</Title>
+                    <Title level="1" >Всё расписание</Title>
                 </SimpleCell>
 
 				{todayIndex == 0 ? null : <Day ignoreToday={true} DayName="Сегодня" Day={currentSchedule[todayIndex-1]}/>}

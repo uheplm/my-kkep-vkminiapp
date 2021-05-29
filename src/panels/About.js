@@ -12,7 +12,7 @@ import {
 	Header,
 	ContentCard,
 	Counter,
-	Chip, Spacing, Separator, Gradient, Title, Text, FixedLayout, Button, Div, FormItem, Banner, Link, Switch
+	Chip, Spacing, Separator, Gradient, Title, Text, FixedLayout, Button, Div, FormItem, Banner, Link, Switch, Headline
 } from '@vkontakte/vkui';
 import {
 	Icon12View, Icon16ViewOutline,
@@ -81,6 +81,7 @@ const About = ({id, go}) => {
 				>
 					Документация VK Mini App
 				</Cell>
+				<Headline>v. 1.0 (RELEASE)</Headline>
 			</Group>
         </Panel>
     )

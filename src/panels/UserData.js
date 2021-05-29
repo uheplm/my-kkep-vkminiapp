@@ -15,13 +15,20 @@ import {
 	Chip, Spacing, Separator, Gradient, Title, Text, FixedLayout, Button, Div, FormItem, Banner, Link, Switch
 } from '@vkontakte/vkui';
 import {
-	Icon12View, Icon16ViewOutline,
+	Icon12View,
+	Icon16ViewOutline,
+	Icon20NotificationOutline,
 	Icon20Users3Outline,
-	Icon24GearOutline, Icon28InfoOutline,
+	Icon24GearOutline, Icon24Notification, Icon24NotificationCheckOutline,
+	Icon24NotificationDisable, Icon24NotificationSlashOutline,
+	Icon28InfoOutline,
+	Icon28SmartphoneOutline,
+	Icon28SmartphoneStarsOutline,
 	Icon28TouchIdOutline,
 	Icon56UserBookOutline
 } from "@vkontakte/icons";
 import Paper from '../img/paper.png'
+import bridge from "@vkontakte/vk-bridge";
 function dropData(){
 	window.localStorage.clear();
 	document.location.reload();
@@ -37,7 +44,7 @@ function useListed(){
 }
 const UserData = ({ id, go, fetchedUser }) => {
 	let listedView = window.localStorage.getItem("show_list") == 1;
-
+	const [notifications, setNotifications] = useState(window.localStorage.getItem("notify") == "true")
 	return (
 		<Panel id={id}>
 			<PanelHeader
@@ -78,6 +85,35 @@ const UserData = ({ id, go, fetchedUser }) => {
 					>
 						Отображение в виде карточек
 					</Cell>
+					<Cell
+						before={<Icon28SmartphoneStarsOutline width={30} height={30}/>}
+						onClick={() => {
+							bridge.send("VKWebAppAddToHomeScreen");
+						}}
+					>
+						Добавить на рабочий стол
+					</Cell>
+					{!notifications ? <Cell
+						before={<Icon24NotificationCheckOutline width={30} height={30}/>}
+						onClick={() => {
+							bridge.send("VKWebAppAllowNotifications");
+							window.localStorage.setItem("notify", "true");
+							setNotifications(true)
+						}}
+					>
+						Разрешить уведомления
+					</Cell> :
+					<Cell
+						before={<Icon24NotificationSlashOutline width={30} height={30}/>}
+						onClick={() => {
+							bridge.send("VKWebAppDenyNotifications");
+							window.localStorage.setItem("notify", "false");
+							setNotifications(false)
+						}}
+					>
+						Запретить уведомления
+					</Cell>
+					}
 					<Header>Информация:</Header>
 					<Cell
 						before={<Icon28InfoOutline width={30} height={30}/>}
