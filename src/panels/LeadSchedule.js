@@ -61,24 +61,16 @@ const LeadSchedule = ({go, id}) => {
 			await fetch(HTTP).then((response) => {
 					setWeek(0);
 					return response.json()
-				})
-				.then((response) => {
+				}).then((response) => {
 					map[0] = response;
-					fetch(HTTP + "&week=" + (map[0][0].week == "1" ? "2" : "1"))
-						.then((response) => {
-							return response.json();
-						})
-						.then((response) => {
-							map[1] = response;
-						}).finally(() => {
-							return true;
-					})
 				})
-				.finally(() => {
-				  	console.log("Fetched Data: Schedule")
-				  	setSchedule(map);
-					console.log(map)
+			await fetch(HTTP + "&week=" + (map[0][0].week == "1" ? "2" : "1"))
+				.then((response) => {
+					return response.json();
+				}).then((response) => {
+					map[1] = response;
 				})
+		setSchedule(map);
 		}
 
 	useEffect(() => {
@@ -97,7 +89,6 @@ const LeadSchedule = ({go, id}) => {
 	},[])
 
 	return (
-
 		<Panel id={id}>
 			<PanelHeader left={<PanelHeaderBack onClick={go} data-to="home"/>}>Преподаватели</PanelHeader>
 			{groups && <FormItem top="Преподаватель:">
@@ -126,10 +117,6 @@ const LeadSchedule = ({go, id}) => {
 				/>
 				</FormItem>
 			}
-
-
-
-
 			{schedule && schedule[week].map(day => <Day ignoreToday={week == 1} forceLeadMode={true} Day={day}/> )}
 		</Panel>
 

@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useEffect, useState} from 'react';
 import PropTypes, {shape} from 'prop-types';
 import {
 	Panel,
@@ -89,8 +89,8 @@ const Home = ({ id, go, fetchedUser, schedule }) => {
                     <Title level="1" >Всё расписание</Title>
                 </SimpleCell>
 
-				{todayIndex == 0 ? null : <Day ignoreToday={true} DayName="Сегодня" Day={currentSchedule[todayIndex-1]}/>}
-				{todayIndex == 6 ? null : (todayIndex == 0 ? <Day DayName="Завтра" Day={nextSchedule[todayIndex]}/> : <Day DayName="Завтра" Day={currentSchedule[todayIndex]}/>)}
+				{(todayIndex == 0 ? null : <Day ignoreToday={true} DayName="Сегодня" Day={currentSchedule[todayIndex-1]}/>)}
+				{(todayIndex == 6 ? null : (todayIndex == 0 ? <Day DayName="Завтра" Day={nextSchedule[todayIndex]}/> : <Day DayName="Завтра" Day={currentSchedule[todayIndex]}/>))}
 
 			</Panel>
 		)

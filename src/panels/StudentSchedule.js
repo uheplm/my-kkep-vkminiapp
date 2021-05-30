@@ -61,33 +61,29 @@ const StudentsSchedule = ({go, id}) => {
 			await fetch(HTTP).then((response) => {
 					setWeek(0);
 					return response.json()
-				})
-				.then((response) => {
+				}).then((response) => {
 					map[0] = response;
-					fetch(HTTP + "&week=" + (map[0][0].week == "1" ? "2" : "1"))
-						.then((response) => {
-							return response.json();
-						})
-						.then((response) => {
-							map[1] = response;
-						}).finally(() => {
-							return true;
-					})
-				})
-				.finally(() => {
+				}).finally(() => {
 				  	console.log("Fetched Data: Schedule")
 				  	setSchedule(map);
 					console.log(map)
 				})
-		}
+			await fetch(HTTP + "&week=" + (map[0][0].week == "1" ? "2" : "1"))
+				.then((response) => {
+					return response.json();
+				}).then((response) => {
+					map[1] = response;
+				}).finally(() => {
+					return true;
+				})
+	}
 
 	useEffect(() => {
 		async function fetchGroupList(){
 			await fetch(`https://my.kkep.ru/api.php?token=${window.localStorage.getItem("auth_token")}&method=get_group_list`)
 				.then((response) => {
 					return response.json()
-				})
-				.then((response) => {
+				}).then((response) => {
 					console.log(response)
 					setGroups(response.map(group => ({value: group.group_num, label: group.group_name})))
 				})

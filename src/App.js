@@ -22,7 +22,7 @@ const App = () => {
 	let localUser = window.localStorage.getItem("login");
 	let failed = window.localStorage.getItem("failed");
 	let scheduleMap = {current: null, next: null}
-	const [activePanel, setActivePanel] = useState('home');
+	const [activePanel, setActivePanel] = useState("home");
 	const [fetchedUser, setUser] = useState(null);
 	const [schedule, setSchedule] = useState(null);
 	const [modal, setModal] = useState(null);
@@ -34,42 +34,42 @@ const App = () => {
 				document.body.attributes.setNamedItem(schemeAttribute);
 			}
 		});
+		async function fetchVKUser(){
+			const user = await bridge.send('VKWebAppGetUserInfo');
+			setUser(user);
+		}
 		async function fetchData() {
 			const TestData = false;
 			let formData = new FormData();
 			formData.append('url', window.location.href);
 			if (!localUser) {
-				await fetch("https://test.my.kkep.ru/api.php?method=vk_miniapp_login", {
-					method: "POST",
-					body: formData
-				}).then((response) => {
-						return response.json()
-				}).then((kUser) => {
-					if (kUser.status == "ok") {
-						setData("login", "1");
-						setData("auth_token", kUser.ses_token);
-						if (TestData ? false : kUser.user.group) {
-							setData("has_group", "1");
-							setData("group_id", kUser.user.group.group_num);
-							setData("group_name", kUser.user.group.name);
-						} else setData("has_group", "0");
-						setData("access_group", !TestData ? kUser.user.access_group : "4");
-						setData("access_name", kUser.user.access_name );
-						setData("user_id", !TestData ? kUser.user.uid : "87" );
-						setData("show_list", "1");
-						setActivePanel('init');
-					} else {
-						setData("failed", "1")
-						setActivePanel('failed')
-					}
-				}).finally(() => {fetchSchedule()})
-				let notifications = await bridge.send("VKWebAppAllowNotifications");
-				window.localStorage.setItem("notify", notifications.result)
-			}else fetchSchedule();
+				let kUser = await fetch("https://test.my.kkep.ru/api.php?method=vk_miniapp_login", {
+					method: "POST", body: formData
+				}).then((response) => {return response.json()})
+				if (kUser.status == "ok") {
+					setData("login", "1");
+					setData("auth_token", kUser.ses_token);
+					if (TestData ? false : kUser.user.group) {
+						setData("has_group", "1");
+						setData("group_id", kUser.user.group.group_num);
+						setData("group_name", kUser.user.group.name);
+					} else setData("has_group", "0");
+					setData("access_group", !TestData ? kUser.user.access_group : "4");
+					setData("access_name", kUser.user.access_name );
+					setData("user_id", !TestData ? kUser.user.uid : "87" );
+					setData("show_list", "1");
+					setActivePanel('init');
+					let notifications = await bridge.send("VKWebAppAllowNotifications");
+					window.localStorage.setItem("notify", notifications.result + "")
+				} else {
+					setData("failed", "1")
+					setActivePanel('failed')
+				}
+				await fetchSchedule();
+			}else await fetchSchedule();
+			fetchVKUser();
 		}
 		async function fetchSchedule() {
-			const user = await bridge.send('VKWebAppGetUserInfo');
-			setUser(user);
 			let HTTP = `https://my.kkep.ru/api.php?token=${window.localStorage.getItem("auth_token")}&method=get_stud_rasp&group=${window.localStorage.getItem("group_id")}`;
 			let leadHTTP = `https://my.kkep.ru/api.php?token=${window.localStorage.getItem("auth_token")}&method=get_prep_rasp&teacher=${window.localStorage.getItem("user_id")}`;
 			let useHTTP = window.localStorage.getItem("access_group") === "4" ? leadHTTP : HTTP;
@@ -90,29 +90,22 @@ const App = () => {
 					{day_of_week: "5", day_name: "Пятница", pairs:[]},
 					{day_of_week: "6", day_name: "Суббота", pairs:[]},
 				];
-				console.log("Fetched Placeholder:");
-				console.log(scheduleMap);
 				setSchedule(scheduleMap);
-				const user = await bridge.send('VKWebAppGetUserInfo');
-				setUser(user);
-			}else {
+
+			}else{
 				await fetch(useHTTP).then((response) => {
 					return response.json()
+				}).then((response) => {
+					scheduleMap.current = response;
 				})
-					.then((response) => {
-						scheduleMap.current = response;
-						fetch(useHTTP + "&week=" + (scheduleMap.current[0].week == "1" ? "2" : "1"))
-							.then((response) => {
-								return response.json();
-							})
-							.then((response) => {
-								scheduleMap.next = response;
-							})
-					})
-					.finally(() => {
-						console.log("Fetched Data: Schedule")
-						setSchedule(scheduleMap);
-					})
+				await fetch(useHTTP + "&week=" + (scheduleMap.current[0].week == "1" ? "2" : "1"))
+				.then((response) => {
+					return response.json();
+				}).then((response) => {
+					scheduleMap.next = response;
+				}).finally(() => {
+					setSchedule(scheduleMap);
+				})
 			}
 		}
 		fetchData();
@@ -121,8 +114,6 @@ const App = () => {
 	const go = e => {
 		setActivePanel(e.currentTarget.dataset.to);
 	};
-
-
 	return <AdaptivityProvider>
 		<AppRoot>
 			<View activePanel={activePanel} popout={schedule ? null : <ScreenSpinner size="large"/>}>
