@@ -117,7 +117,7 @@ const LeadSchedule = ({go, id}) => {
 				/>
 				</FormItem>
 			}
-			{schedule && schedule[week].map(day => <Day ignoreToday={week == 1} forceLeadMode={true} Day={day}/> )}
+			{schedule && schedule[week].map(day => <Day go={go} ignoreToday={week == 1} forceLeadMode={true} Day={day}/> )}
 		</Panel>
 
 	)

@@ -52,6 +52,7 @@ const colorMapHeader = {
 
 
 const StudentsSchedule = ({go, id}) => {
+	console.log(go, "From ssh")
 	const [week, setWeek] = useState(0);
 	const [groups, setGroups] = useState(null);
 	const [schedule, setSchedule] = useState(null);
@@ -122,7 +123,7 @@ const StudentsSchedule = ({go, id}) => {
 				/>
 				</FormItem>
 			}
-			{schedule && schedule[week].map(day => <Day ignoreToday={week == 1} Day={day}/> )}
+			{schedule && schedule[week].map(day => <Day go={go} ignoreToday={week == 1} Day={day}/> )}
 		</Panel>
 
 	)

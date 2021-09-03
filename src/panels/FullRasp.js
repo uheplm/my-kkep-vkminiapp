@@ -80,7 +80,7 @@ const FullRasp = ({go, id, schedule}) => {
 
 			</Div>
 
-			{map[week].map((day) => <Day ignoreToday={week == 1} Day={day}/>)}
+			{map[week].map((day) => <Day go={go} ignoreToday={week == 1} Day={day}/>)}
 		</Panel>
 
 	)

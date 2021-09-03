@@ -1,18 +1,34 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import bridge from '@vkontakte/vk-bridge';
-import {View, ScreenSpinner, AdaptivityProvider, AppRoot, Button, ModalCard, ModalRoot} from '@vkontakte/vkui';
+import {
+	View,
+	ScreenSpinner,
+	AdaptivityProvider,
+	AppRoot,
+	Button,
+	ModalCard,
+	ModalRoot,
+	Epic,
+	Tabbar, TabbarItem
+} from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 import Home from './panels/Home';
 import UserData from './panels/UserData';
 import FullRasp from './panels/FullRasp'
 import InitialLaunch from "./panels/InitialLaunch";
 import StudentsSchedule from "./panels/StudentSchedule";
-import {Icon56MoneyTransferOutline} from "@vkontakte/icons";
+import {
+	Icon28User,
+	Icon28UserStarBadgeOutline,
+	Icon36Users3Outline,
+	Icon56MoneyTransferOutline
+} from "@vkontakte/icons";
 import * as PropTypes from "prop-types";
 import Failed from "./panels/FailedDialog";
 import About from "./panels/About";
 import LeadSchedule from "./panels/LeadSchedule";
+import Notebook from "./panels/Notebook";
 
 function setData(key, value){
 	window.localStorage.setItem(key,value);
@@ -58,7 +74,8 @@ const App = () => {
 					setData("access_name", kUser.user.access_name );
 					setData("user_id", !TestData ? kUser.user.uid : "87" );
 					setData("show_list", "1");
-					setActivePanel('init');
+					setData("fl_notify", "1");
+					setData("upd_notify", "1");
 					let notifications = await bridge.send("VKWebAppAllowNotifications");
 					window.localStorage.setItem("notify", notifications.result + "")
 				} else {
@@ -125,6 +142,7 @@ const App = () => {
 				<Failed id="failed" go={go}/>
 				<About id="about" go={go}/>
 				<LeadSchedule id="leads" go={go}/>
+				<Notebook id="notebook" go={go}/>
 			</View>
 		</AppRoot>
 	</AdaptivityProvider>

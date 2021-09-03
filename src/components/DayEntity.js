@@ -30,12 +30,15 @@ const styleMap = {
     subjectsRootList: {
         height: "100%",
         marginBottom: "15px",
+        paddingBottom: "10px",
         marginLeft: "15px",
         marginRight: "15px",
+        borderRadius: "15px"
     }
 }
 
-const Day = ({Day, DayName, ignoreToday, forceLeadMode}) => {
+const Day = ({Day, DayName, ignoreToday, forceLeadMode, go}) => {
+    console.log(go, "From day");
     const isLeadMode = Day.hasOwnProperty("prep_uid") | forceLeadMode;
     const listedView = window.localStorage.getItem("show_list") == 1;
     const DayMap = {
@@ -64,7 +67,7 @@ const Day = ({Day, DayName, ignoreToday, forceLeadMode}) => {
                 </SimpleCell>
                 {(notNull() > 0) ?
                     <CardScroll size="m" style={styleMap.subjectsRoot}>
-                        {DayMap.subjectList.map((subject) => <Subject prepMode={isLeadMode} subject={subject}/>)}
+                        {DayMap.subjectList.map((subject) => <Subject go={go} prepMode={isLeadMode} subject={subject}/>)}
                     </CardScroll>
                     :
                     <Div>
@@ -81,9 +84,9 @@ const Day = ({Day, DayName, ignoreToday, forceLeadMode}) => {
                         <Title level="2" weight="semibold"
                                style={styleMap.dayTitle}>{DayName == undefined ? DayMap.dayName : DayName + ": " + DayMap.dayName}</Title>
                     </SimpleCell>
-                    <Separator/>
+
                     {(notNull() > 0) ?
-                        DayMap.subjectList.map((subject) => <Subject prepMode={isLeadMode} subject={subject}/>) :
+                        DayMap.subjectList.map((subject) => <Subject go={go} dindex={DayMap.dayIndex} prepMode={isLeadMode} subject={subject}/>) :
                         <SubjectPlaceholder/>
                     }
                 </Card>

@@ -7,14 +7,15 @@ import {
 } from '@vkontakte/vkui';
 import {
     Icon12Clock,
-    Icon16ClockOurline,
+    Icon16ClockOurline, Icon16InfoOutline,
     Icon16Smile,
     Icon20UserOutline,
-    Icon20Users3Outline,
-    Icon24Switch,
+    Icon20Users3Outline, Icon24PenOutline,
+    Icon24Switch, Icon28InfoOutline,
     Icon28SwitchOutline, Icon28UserStarBadgeOutline,
     Icon36Users
 } from "@vkontakte/icons";
+import {localStorage} from "@vkontakte/vkjs";
 
 // Map for card headers
 const colorMapHeader = {
@@ -41,19 +42,34 @@ const styleMap = {
         textAlign: "center",
     },
     subjNumber: {
-        background: "#eeeeee",
+        background: "#fff",
         color: "#168efd",
         textShadow: "none",
         textAlign: "center",
     },
     headerTitle: {
         marginLeft: "10px"
+    },
+    listItem:{
+        backgroundColor: "rgba(118,118,118,0.1)",
+        borderRadius: "15px",
+        margin: "5px 15px 15px 15px"
+    },
+    penIc: {
+        marginRight: "5px"
     }
 }
 
-const Subject = ({subject, prepMode}) => {
+const Subject = ({subject, prepMode, go, dindex}) => {
     const listedView = window.localStorage.getItem("show_list") == 1;
     const useDots = listedView ? 100 : 25;
+    const openMore = (e) => {
+        console.log(go)
+        subject['dindex'] = dindex;
+        const subjstring = JSON.stringify(subject);
+        sessionStorage.setItem('subjView', subjstring);
+        go(e);
+    }
     let SubjectMap = {
         subjCounter: subject.p_num,
         subjName: (subject.p_subj || "Нет").substring(0, useDots),
@@ -83,7 +99,6 @@ const Subject = ({subject, prepMode}) => {
     const iconUser        = <Icon20UserOutline   width={20} height={20}/>;
     const iconRoom        = <Icon20Users3Outline width={20} height={20}/>;
     const iconGroup       = <Icon36Users         width={20} height={20}/>;
-
     if(SubjectMap.noSubject == "1") return null;
     else if(!listedView){
         return (
@@ -113,7 +128,7 @@ const Subject = ({subject, prepMode}) => {
     } else {
         return (
             <div>
-                <SimpleCell disabled before={subjCounter} after={<span style={{display: "flex"}}>{subjTime.split(" - ")[0]}{SubjectMap.isChanged ? <Badge style={{marginLeft: 2}} mode="prominent"/> : null}</span>} >
+                <SimpleCell onClick={openMore} data-to="notebook" style={styleMap.listItem} before={subjCounter} after={<span style={{display: "flex"}}>{subjTime.split(" - ")[0]}{SubjectMap.isChanged ? <Badge style={{marginLeft: 2}} mode="prominent"/> : null}</span>} >
                     <span style={{marginLeft: "10px", fontWeight: "bold"}}>{subjName + (subjName.length >= useDots ? "..." : "")}</span><br/>
                     <span style={{margin: "10px"}}>{subjRoom}</span><br/>
                     {prepMode ? <span style={{margin: "10px"}}>Группа:  {SubjectMap.subjectGroup} </span> :

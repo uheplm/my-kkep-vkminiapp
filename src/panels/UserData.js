@@ -50,14 +50,31 @@ const UserData = ({ id, go, fetchedUser }) => {
 			<PanelHeader
 				left={<PanelHeaderBack onClick={go} data-to="home"/>}
 			>
-				Настройки
+				Профиль
 			</PanelHeader>
 			<Group>
+				<Banner
+				mode="image"
+				header="Ищем светлые умы!"
+				id="upd_banner"
+				subheader={<span>Проект поддерживается одним человеком, который уже закончил колледж. Этот проект – диплом.<br/>Если хочешь помочь, есть чем. Присоеденяйся к разработке!</span>}
+				background={<div
+					style={{
+					  	backgroundColor: '#63b2c0',
+					  	backgroundPosition: '100% 150%',
+					  	backgroundSize: 100,
+						backgroundRepeat: 'no-repeat',
+						backgroundImage: "url(https://vk.com/sticker/1-11784-128)"
+					}}
+				/>}
+        		actions={<Button mode="overlay_primary" href="https://vk.me/join/kYyn6fT_0ltx0YN35R0nDB6q3yenqZ4Sywo=" target="_blank">Я в деле!</Button>}
+      			/>
 				<Banner
 					before={<Avatar size={50} src={fetchedUser.photo_200}/>}
 					header={<Title level="2">{fetchedUser.first_name} {fetchedUser.last_name}</Title>}
 				/>
 				<Group mode="plain">
+					<div style={{paddingBottom: "80px"}}>
 					<Header>Информация о пользователе:</Header>
 					{!(window.localStorage.getItem("has_group") == "0") ? <Cell disabled
 						before={<Icon20Users3Outline width={30} height={30}/>}
@@ -122,6 +139,7 @@ const UserData = ({ id, go, fetchedUser }) => {
 					>
 						О программе
 					</Cell>
+					</div>
 					<FixedLayout filled vertical="bottom">
 
 						<FormItem top="Если что-то не так, попробуйте:">

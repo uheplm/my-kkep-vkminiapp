@@ -49,7 +49,7 @@ import {
 	Icon28NewsfeedOutline,
 	Icon28ServicesOutline,
 	Icon28Settings,
-	Icon28SettingsOutline,
+	Icon28SettingsOutline, Icon28User,
 	Icon28UserCircleOutline,
 	Icon28UserStarBadgeOutline,
 	Icon36Users3Outline
@@ -61,6 +61,12 @@ import {IconSettingsContext} from "@vkontakte/icons/dist/IconSettings";
 import ListIcon from "../img/list.svg";
 const sign = window.location.search.split("sign=")[1]
 
+const styles = {
+	button: {
+		borderRadius: "15px"
+	}
+}
+
 const Home = ({ id, go, fetchedUser, schedule }) => {
 
 	console.log(schedule);
@@ -71,30 +77,76 @@ const Home = ({ id, go, fetchedUser, schedule }) => {
 		const nextSchedule = schedule.next;
 		return (
 			<Panel id={id}>
-				<PanelHeader left={<PanelHeaderButton onClick={go} data-to="userdata"><Icon28SettingsOutline/></PanelHeaderButton>}>Мой ККЭП</PanelHeader>
-
-				{/*<CardScroll>*/}
-				{/*	<Button before={<Icon36Users3Outline/>} size="l"  onClick={go} data-to="students" style={{marginRight: "10px"}}></Button>*/}
-				{/*	<Button before={<Icon24List/>} size="l"  onClick={go} data-to="fullrasp"></Button>*/}
-				{/*	<Button before={<Icon28UserStarBadgeOutline/>} size="l"  onClick={go} data-to="leads" style={{marginLeft: "10px"}}></Button>*/}
-				{/*	*/}
-				{/*</CardScroll>*/}
-
-				<Div style={{display: "flex"}}>
-					<Button size="l" stretched before={<Icon36Users3Outline/>} style={{marginRight: "10px"}} onClick={go} data-to="students">Группы</Button>
-					<Button size="l" stretched before={<Icon28UserStarBadgeOutline/>} style={{marginRight: "0px"}} onClick={go} data-to="leads">Преподаватели</Button>
-				</Div>
+				<PanelHeader>Мой ККЭП</PanelHeader>
+				<div style={{paddingBottom: "50px"}}>
+				{localStorage.getItem('fl_notify') == "1" ?<Banner
+				mode="image"
+				header={window.localStorage.getItem("has_group") == "0" ? "Ваша роль определена автоматически" : "Ваша группа определена автоматически"}
+				id="fl_banner"
+				subheader={!(window.localStorage.getItem("has_group") == "0") ?
+					<Text>Учебная группа: {window.localStorage.getItem("group_name")}</Text> : <Text>Группа пользователей: {window.localStorage.getItem("access_name")}</Text>}
+				background={<div
+					style={{
+					  	backgroundColor: '#65c063',
+					  	backgroundPosition: '100% 32px',
+					  	backgroundSize: 100,
+						backgroundImage: "url(https://vk.com/sticker/1-163-128)",
+					  	backgroundRepeat: 'no-repeat',
+					}}
+				/>}
+        		actions={<Button onClick={()=>{localStorage.setItem('fl_notify', "0"); document.getElementById("fl_banner").remove()}} mode="overlay_primary">Справедливо</Button>}
+      			/> : null}
+				{localStorage.getItem('upd_notify') == "1" ?<Banner
+				mode="image"
+				header="Встречайте новый функционал!"
+				id="upd_banner"
+				subheader={<span>Теперь вы можете нажать на карточку пары чтобы посмотреть подробности и оставить заметки.<br/>Скоро появится функция синхронизации заметок по всей группе.</span>}
+				background={<div
+					style={{
+					  	backgroundColor: '#63b2c0',
+					  	backgroundPosition: '100% 150%',
+					  	backgroundSize: 100,
+						backgroundRepeat: 'no-repeat',
+						backgroundImage: "url(https://vk.com/sticker/1-13233-128)"
+					}}
+				/>}
+        		actions={<Button onClick={()=>{localStorage.setItem('upd_notify', "0"); document.getElementById("upd_banner").remove()}} mode="overlay_primary">Отлично!</Button>}
+      			/> : null}
+				{/*<Div style={{display: "flex"}}>*/}
+				{/*	<Button style={styles.button} size="l" stretched before={<Icon36Users3Outline/>} style={{marginRight: "10px"}} onClick={go} data-to="students">Группы</Button>*/}
+				{/*	<Button style={styles.button} size="l" stretched before={<Icon28UserStarBadgeOutline/>} style={{marginRight: "0px"}} onClick={go} data-to="leads">Преподаватели</Button>*/}
+				{/*</Div>*/}
 
 				<SimpleCell onClick={go} data-to="fullrasp" after={<Icon24ChevronRight width={24} height={24} />} style={{marginBottom: "10px"}}>
                     <Title level="1" >Всё расписание</Title>
                 </SimpleCell>
 
-				{(todayIndex == 0 ? null : <Day ignoreToday={true} DayName="Сегодня" Day={currentSchedule[todayIndex-1]}/>)}
-				{(todayIndex == 6 ? null : (todayIndex == 0 ? <Day DayName="Завтра" Day={nextSchedule[todayIndex]}/> : <Day DayName="Завтра" Day={currentSchedule[todayIndex]}/>))}
+				{(todayIndex == 0 ? null : <Day go={go} ignoreToday={true} DayName="Сегодня" Day={currentSchedule[todayIndex-1]}/>)}
+				{(todayIndex == 6 ? null : (todayIndex == 0 ? <Day go={go} DayName="Завтра" Day={nextSchedule[todayIndex]}/> : <Day go={go} DayName="Завтра" Day={currentSchedule[todayIndex]}/>))}
+				</div>
+				<Epic id="nav">
+				  <Tabbar>
+					<TabbarItem
+					  onClick={go}
+					  data-to="students"
+					  text="Группы"
+					><Icon36Users3Outline width={28} height={28}/></TabbarItem>
+					<TabbarItem
+					  onClick={go}
+					  data-to="leads"
+					  text="Преподаватели"
+					><Icon28UserStarBadgeOutline width={28} height={28}/></TabbarItem>
+					<TabbarItem
+					  onClick={go}
+					  data-to="userdata"
+					  text="Профиль"
+					><Icon28User width={28} height={28}/></TabbarItem>
+				  </Tabbar>
+				</Epic>
 
 			</Panel>
-		)
-	}
+		)}
+
 	else return (
 		<Panel id={id}>
 			<PanelHeader left={fetchedUser && <Avatar size={36} src={fetchedUser.photo_200} onClick={go} data-to="userdata"/>}>Мой ККЭП</PanelHeader>
