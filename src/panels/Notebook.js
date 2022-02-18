@@ -30,7 +30,7 @@ import {
 	Tabs,
 	TabsItem,
 	Select,
-	PanelHeaderBack, CustomSelectOption, CustomSelect, Switch, Textarea, Separator, Checkbox
+	PanelHeaderBack, CustomSelectOption, CustomSelect, Switch, Textarea, Separator, Checkbox, ModalPage, ModalPageHeader
 } from '@vkontakte/vkui';
 import {
 	Icon12Clock,
@@ -77,43 +77,46 @@ const styleMap = {
 	}
 }
 
-const Notebook = ({id, go}) => {
+const Notebook = ({id, close, user}) => {
 	const subject = JSON.parse(sessionStorage.getItem("subjView"));
 
 	const saveForm = () => {
 		let text = document.getElementById("notebook_input");
 		let id = subject.dindex + subject.p_num + subject.p_prep + subject.p_aud;
-		localStorage.setItem(id, text.value);
+		let data = {
+			avatar: user.photo_200,
+			name: user.first_name + " " + user.last_name,
+			text: text.value
+		}
+		localStorage.setItem(id, JSON.stringify(data));
+	}
+	const loadData = () => {
+		let data = localStorage.getItem(subject.dindex + subject.p_num + subject.p_prep + subject.p_aud)
+		if(!data){
+			let blank = {
+				avatar: user.photo_200,
+				name: user.first_name + " " + user.last_name,
+				text: ""
+			}
+			localStorage.setItem(subject.dindex + subject.p_num + subject.p_prep + subject.p_aud, JSON.stringify(blank))
+			return JSON.parse(localStorage.getItem(subject.dindex + subject.p_num + subject.p_prep + subject.p_aud))
+		}else{
+			return JSON.parse(localStorage.getItem(subject.dindex + subject.p_num + subject.p_prep + subject.p_aud))
+		}
 	}
 	return (
-		<Panel id={id}>
-			<PanelHeader left={<PanelHeaderBack onClick={go} data-to="home"/>}>Предмет</PanelHeader>
+		<ModalPage id={id} onClose={close} dynamicContentHeight>
+			<ModalPageHeader left={<PanelHeaderBack onClick={close}/>}>{subject.p_subj}</ModalPageHeader>
 
-				<Group mode="plain" header={<Header>Информация о предмете</Header>}>
 				<Div>
-					<Card>
-					<div>
-						<SimpleCell before={<Icon28InfoOutline/>}>{subject.p_subj}</SimpleCell>
-						<SimpleCell before={<Icon24ClockOutline width={28} height={28}/>}>Время: {subject.p_time}</SimpleCell>
-					</div>
-					<div>
-						<SimpleCell before={<Icon24ArrowRightOutline width={28} height={28}/>}>Аудитория: {subject.p_aud}</SimpleCell>
-						<SimpleCell before={<Icon28User width={28} height={28}/>}>Преподаватель: {subject.p_prep}</SimpleCell>
-					</div>
-
-
-					{subject.ischange ? <SimpleCell before={<Icon16Replay width={28} height={28}/>}>Замена</SimpleCell> : ""}
-					<FormItem top="Заметки">
-						<Textarea id="notebook_input" onInput={saveForm} defaultValue={localStorage.getItem(subject.dindex + subject.p_num + subject.p_prep + subject.p_aud)} placeholder="Домашнее задание, напоминания и так далее. Скоро будет добавлена поддержка облачных заметок, которые будут видны для всей группы">
-						</Textarea>
-						<Checkbox disabled before={<Icon28InfoOutline/>}>Синхронизировать с группой (скоро)</Checkbox>
-					{/*<Button onClick={saveForm} stretched style={{height: "40px"}}>Сохранить</Button>*/}
-        			</FormItem>
-					</Card>
+				<Textarea id="notebook_input" onInput={saveForm} defaultValue={loadData().text} placeholder="Домашнее задание, напоминания и так далее. Скоро будет добавлена поддержка облачных заметок, которые будут видны для всей группы">
+				</Textarea>
+				<SimpleCell disabled before={<Avatar size={24} src={loadData().avatar}/>}>Последнее изменение от: <b>{loadData().name}</b></SimpleCell>
 				</Div>
-				</Group>
 
-		</Panel>
+
+
+		</ModalPage>
 
 	)
 }

@@ -53,7 +53,7 @@ const scheduleMap = [
 	null, null
 ]
 
-const FullRasp = ({go, id, schedule}) => {
+const FullRasp = ({go, id, schedule, modal}) => {
 	let map = [schedule.current, schedule.next]
 	const [week, setWeek] = useState(0);
 
@@ -80,7 +80,7 @@ const FullRasp = ({go, id, schedule}) => {
 
 			</Div>
 
-			{map[week].map((day) => <Day go={go} ignoreToday={week == 1} Day={day}/>)}
+			{map[week].map((day) => <Day go={go} modal={modal} ignoreToday={week == 1} Day={day}/>)}
 		</Panel>
 
 	)

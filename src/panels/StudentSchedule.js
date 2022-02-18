@@ -51,7 +51,7 @@ const colorMapHeader = {
 }
 
 
-const StudentsSchedule = ({go, id}) => {
+const StudentsSchedule = ({go, id, modal}) => {
 	console.log(go, "From ssh")
 	const [week, setWeek] = useState(0);
 	const [groups, setGroups] = useState(null);
@@ -99,8 +99,9 @@ const StudentsSchedule = ({go, id}) => {
 			<PanelHeader left={<PanelHeaderBack onClick={go} data-to="home"/>}>Студенты</PanelHeader>
 			{groups && <FormItem top="Группа:">
 				<CustomSelect
-				  placeholder="Не выбрана"
+				  placeholder="Введите группу"
 				  options={groups}
+				  searchable
 				  style={{marginBottom: "10px"}}
 				  onChange={fetchSchedule}
 				  renderOption={({ option, ...restProps }) => (
@@ -123,7 +124,7 @@ const StudentsSchedule = ({go, id}) => {
 				/>
 				</FormItem>
 			}
-			{schedule && schedule[week].map(day => <Day go={go} ignoreToday={week == 1} Day={day}/> )}
+			{schedule && schedule[week].map(day => <Day go={go} modal={modal} ignoreToday={week == 1} Day={day}/> )}
 		</Panel>
 
 	)

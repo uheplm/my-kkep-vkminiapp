@@ -37,8 +37,8 @@ const styleMap = {
     }
 }
 
-const Day = ({Day, DayName, ignoreToday, forceLeadMode, go}) => {
-    console.log(go, "From day");
+const Day = ({Day, DayName, ignoreToday, forceLeadMode, go, modal}) => {
+
     const isLeadMode = Day.hasOwnProperty("prep_uid") | forceLeadMode;
     const listedView = window.localStorage.getItem("show_list") == 1;
     const DayMap = {
@@ -86,7 +86,7 @@ const Day = ({Day, DayName, ignoreToday, forceLeadMode, go}) => {
                     </SimpleCell>
 
                     {(notNull() > 0) ?
-                        DayMap.subjectList.map((subject) => <Subject go={go} dindex={DayMap.dayIndex} prepMode={isLeadMode} subject={subject}/>) :
+                        DayMap.subjectList.map((subject) => <Subject go={go} modal={modal} data-modal="notebook" dindex={DayMap.dayIndex} prepMode={isLeadMode} subject={subject}/>) :
                         <SubjectPlaceholder/>
                     }
                 </Card>

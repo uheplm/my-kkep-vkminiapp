@@ -30,7 +30,7 @@ import {
 	Tabs,
 	TabsItem,
 	Select,
-	PanelHeaderBack, CustomSelectOption, CustomSelect, Switch
+	PanelHeaderBack, CustomSelectOption, CustomSelect, Switch, SelectMimicry
 } from '@vkontakte/vkui';
 import {
 	Icon12Clock, Icon16Cancel, Icon16CancelCircleOutline,
@@ -51,7 +51,7 @@ const colorMapHeader = {
 }
 
 
-const LeadSchedule = ({go, id}) => {
+const LeadSchedule = ({go, id, modal}) => {
 	const [week, setWeek] = useState(0);
 	const [groups, setGroups] = useState(null);
 	const [schedule, setSchedule] = useState(null);
@@ -92,14 +92,16 @@ const LeadSchedule = ({go, id}) => {
 		<Panel id={id}>
 			<PanelHeader left={<PanelHeaderBack onClick={go} data-to="home"/>}>Преподаватели</PanelHeader>
 			{groups && <FormItem top="Преподаватель:">
-				<CustomSelect
-				  placeholder="Не выбран"
+				<Select
+				  placeholder="Введите имя"
 				  options={groups}
+
 				  style={{marginBottom: "10px"}}
 				  onChange={fetchSchedule}
 				  renderOption={({ option, ...restProps }) => (
 					<CustomSelectOption {...restProps} before={<Icon28UserStarBadgeOutline/>}/>
 				  )}
+				  searchable={true}
 				/>
 				<CustomSelect onChange={e => {setWeek(e.target.value)}} value={week} options={[
 						{
@@ -117,7 +119,7 @@ const LeadSchedule = ({go, id}) => {
 				/>
 				</FormItem>
 			}
-			{schedule && schedule[week].map(day => <Day go={go} ignoreToday={week == 1} forceLeadMode={true} Day={day}/> )}
+			{schedule && schedule[week].map(day => <Day go={go} modal={modal} ignoreToday={week == 1} forceLeadMode={true} Day={day}/> )}
 		</Panel>
 
 	)
